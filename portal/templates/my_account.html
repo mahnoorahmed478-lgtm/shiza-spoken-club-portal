@@ -1,0 +1,253 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Account - Shiza Spoken Club</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
+        }
+
+        /* =========================
+           SIDEBAR (MATCHES DASHBOARD)
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 25px 16px;
+        }
+
+        .sidebar-logo {
+            width: 185px;
+            display: block;
+            margin: 0 auto 38px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            text-decoration: none;
+            color: #374151;
+            padding: 13px 16px;
+            margin-bottom: 7px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .menu a:hover {
+            background: #f1f5f9;
+        }
+
+        .menu a.active {
+            background: #1769aa;
+            color: white;
+        }
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .logout {
+            margin-top: 28px;
+            color: #c62828 !important;
+        }
+
+        .logout:hover {
+            background: #fff1f2 !important;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 38px 45px;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .header-sub {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .card-container {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e8edf2;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+            padding: 30px 35px;
+            max-width: 650px;
+        }
+
+        .info-row {
+            padding: 18px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .info-row:first-child {
+            padding-top: 0;
+        }
+
+        .info-label {
+            display: block;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 17px;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            .main {
+                margin-left: 0;
+                padding: 25px 18px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <img
+            src="{% static 'images/shiza-logo.jpeg' %}"
+            class="sidebar-logo"
+            alt="Shiza Spoken Club"
+        >
+
+        <div class="menu">
+            <a href="{% url 'student_dashboard' %}">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 10.5L12 3l9 7.5"></path>
+                    <path d="M5 9.5V21h14V9.5"></path>
+                    <path d="M9 21v-6h6v6"></path>
+                </svg>
+                Home
+            </a>
+
+            <a href="{% url 'my_lessons' %}">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                My Lessons
+            </a>
+
+            <a href="{% url 'student_fees' %}">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                    <path d="M3 10h18"></path>
+                    <path d="M7 15h3"></path>
+                </svg>
+                Fees
+            </a>
+
+            <a href="{% url 'student_certificates' %}">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="5"></circle>
+                    <path d="M8.5 12L7 22l5-3 5 3-1.5-10"></path>
+                </svg>
+                Certificate
+            </a>
+
+            <a href="{% url 'my_account' %}" class="active">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path>
+                </svg>
+                My Account
+            </a>
+
+            <a href="{% url 'student_logout' %}" class="logout">
+                <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M21 19V5a2 2 0 0 0-2-2h-6"></path>
+                </svg>
+                Logout
+            </a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="header-title">My Account</div>
+        <div class="header-sub">Your student account information</div>
+
+        <div class="card-container">
+            <div class="info-row">
+                <span class="info-label">Name</span>
+                <span class="info-value">{{ student.name }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">WhatsApp Number</span>
+                <span class="info-value">{{ student.whatsapp }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Username</span>
+                <span class="info-value">{{ student.username }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Password</span>
+                <span class="info-value">{{ student.password }}</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

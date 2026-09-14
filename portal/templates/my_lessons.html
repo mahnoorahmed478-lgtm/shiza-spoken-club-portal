@@ -1,0 +1,479 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Lessons - Shiza Spoken Club</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
+        }
+
+
+        /* =========================
+           SIDEBAR (MATCHES DASHBOARD)
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 25px 16px;
+        }
+
+        .sidebar-logo {
+            width: 185px;
+            display: block;
+            margin: 0 auto 38px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            text-decoration: none;
+            color: #374151;
+            padding: 13px 16px;
+            margin-bottom: 7px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .menu a:hover {
+            background: #f1f5f9;
+        }
+
+        .menu a.active {
+            background: #1769aa;
+            color: white;
+        }
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .logout {
+            margin-top: 28px;
+            color: #c62828 !important;
+        }
+
+        .logout:hover {
+            background: #fff1f2 !important;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 38px 45px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           LESSON ACCORDIONS
+        ========================= */
+
+        .level {
+            background: white;
+            border-radius: 14px;
+            margin-bottom: 18px;
+            border: 1px solid #e8edf2;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .level summary {
+            cursor: pointer;
+            padding: 20px 24px;
+            font-size: 17px;
+            font-weight: bold;
+            color: #1769aa;
+            list-style: none;
+            user-select: none;
+        }
+
+        .level summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .level summary::after {
+            content: "+";
+            float: right;
+            font-size: 20px;
+            color: #6b7280;
+        }
+
+        .level[open] summary::after {
+            content: "−";
+            color: #1769aa;
+        }
+
+        .lesson-list {
+            padding: 0 24px 24px;
+        }
+
+        .lesson-card {
+            border: 1px solid #eef2f6;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-top: 12px;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .lesson-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .lesson-number {
+            color: #1769aa;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background: #1769aa;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .button:hover {
+            background: #125386;
+        }
+
+        .button.video {
+            background: #1f2937;
+        }
+
+        .button.video:hover {
+            background: #111827;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<div class="sidebar">
+
+    <img
+        src="{% static 'images/shiza-logo.jpeg' %}"
+        class="sidebar-logo"
+        alt="Shiza Spoken Club"
+    >
+
+    <div class="menu">
+
+        <a href="{% url 'student_dashboard' %}">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 10.5L12 3l9 7.5"></path>
+                <path d="M5 9.5V21h14V9.5"></path>
+                <path d="M9 21v-6h6v6"></path>
+            </svg>
+            Home
+        </a>
+
+        <a href="{% url 'my_lessons' %}" class="active">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            My Lessons
+        </a>
+
+        <a href="{% url 'student_fees' %}">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                <path d="M3 10h18"></path>
+                <path d="M7 15h3"></path>
+            </svg>
+            Fees
+        </a>
+
+        <a href="{% url 'student_certificates' %}">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="5"></circle>
+                <path d="M8.5 12L7 22l5-3 5 3-1.5-10"></path>
+            </svg>
+            Certificate
+        </a>
+
+        <a href="{% url 'my_account' %}">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"></path>
+            </svg>
+            My Account
+        </a>
+
+        <a href="{% url 'student_logout' %}" class="logout">
+            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 17l5-5-5-5"></path>
+                <path d="M15 12H3"></path>
+                <path d="M21 19V5a2 2 0 0 0-2-2h-6"></path>
+            </svg>
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<div class="main">
+
+    <div class="header">
+        <h1>My Lessons</h1>
+        <p>Welcome, {{ student.name }}. Here are your assigned lessons.</p>
+    </div>
+
+
+    <!-- =========================
+         BEGINNER
+    ========================= -->
+
+    <details class="level">
+
+        <summary>
+            Beginner
+        </summary>
+
+        <div class="lesson-list">
+
+            {% for assignment in assigned_lessons %}
+
+                {% if assignment.lesson.level == "Beginner" %}
+
+                    <div class="lesson-card">
+
+                        <div class="lesson-title">
+                            <span class="lesson-number">Lesson {{ assignment.lesson.lesson_number }}</span>
+                            {% if assignment.lesson.title %}
+                                - {{ assignment.lesson.title }}
+                            {% endif %}
+                        </div>
+
+                        <div class="buttons">
+
+                            {% if assignment.lesson.pdf %}
+                                <a href="{{ assignment.lesson.pdf.url }}" target="_blank" class="button">
+                                    View PDF
+                                </a>
+                            {% endif %}
+
+                            {% if assignment.lesson.video_lesson %}
+                                <a href="{{ assignment.lesson.video_lesson.video.url }}" target="_blank" class="button video">
+                                    Watch Video
+                                </a>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </details>
+
+
+    <!-- =========================
+         PRE-INTERMEDIATE
+    ========================= -->
+
+    <details class="level">
+
+        <summary>
+            Pre-Intermediate
+        </summary>
+
+        <div class="lesson-list">
+
+            {% for assignment in assigned_lessons %}
+
+                {% if assignment.lesson.level == "Pre-Intermediate" %}
+
+                    <div class="lesson-card">
+
+                        <div class="lesson-title">
+                            <span class="lesson-number">Lesson {{ assignment.lesson.lesson_number }}</span>
+                            {% if assignment.lesson.title %}
+                                - {{ assignment.lesson.title }}
+                            {% endif %}
+                        </div>
+
+                        <div class="buttons">
+
+                            {% if assignment.lesson.pdf %}
+                                <a href="{{ assignment.lesson.pdf.url }}" target="_blank" class="button">
+                                    View PDF
+                                </a>
+                            {% endif %}
+
+                            {% if assignment.lesson.video_lesson %}
+                                <a href="{{ assignment.lesson.video_lesson.video.url }}" target="_blank" class="button video">
+                                    Watch Video
+                                </a>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </details>
+
+
+    <!-- =========================
+         INTERMEDIATE
+    ========================= -->
+
+    <details class="level">
+
+        <summary>
+            Intermediate
+        </summary>
+
+        <div class="lesson-list">
+
+            {% for assignment in assigned_lessons %}
+
+                {% if assignment.lesson.level == "Intermediate" %}
+
+                    <div class="lesson-card">
+
+                        <div class="lesson-title">
+                            <span class="lesson-number">Lesson {{ assignment.lesson.lesson_number }}</span>
+                            {% if assignment.lesson.title %}
+                                - {{ assignment.lesson.title }}
+                            {% endif %}
+                        </div>
+
+                        <div class="buttons">
+
+                            {% if assignment.lesson.pdf %}
+                                <a href="{{ assignment.lesson.pdf.url }}" target="_blank" class="button">
+                                    View PDF
+                                </a>
+                            {% endif %}
+
+                            {% if assignment.lesson.video_lesson %}
+                                <a href="{{ assignment.lesson.video_lesson.video.url }}" target="_blank" class="button video">
+                                    Watch Video
+                                </a>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </details>
+
+</div>
+
+</body>
+
+</html>

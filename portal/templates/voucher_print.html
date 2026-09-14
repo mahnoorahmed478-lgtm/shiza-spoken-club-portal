@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fee Voucher - {{ voucher.voucher_no }}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .no-print-bar { text-align: center; margin-bottom: 20px; }
+        .print-btn { background: #27ae60; color: white; padding: 10px 24px; border: none; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        
+        .voucher-sheet { width: 880px; margin: auto; background: white; padding: 25px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; gap: 20px; }
+        
+        .slip { 
+            width: 50%; 
+            border: 2px dashed #888; 
+            padding: 20px; 
+            position: relative; 
+            overflow: hidden; 
+            background: #fff;
+        }
+
+        .header { text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 8px; margin-bottom: 14px; }
+        .header img { max-height: 50px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto; }
+        .header h3 { margin: 0; color: #2c3e50; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .header span { font-size: 12px; font-weight: bold; color: #7f8c8d; }
+
+        .info-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+        .info-label { font-weight: bold; color: #333; }
+
+        .amount-box { 
+            margin-top: 15px; 
+            border: 1.5px solid #2c3e50; 
+            padding: 10px; 
+            text-align: center; 
+            background-color: #f8fafc; 
+            border-radius: 6px;
+        }
+        .amount-box .total { font-size: 20px; font-weight: bold; color: #1769aa; }
+
+        .instructions { font-size: 11px; color: #555; margin-top: 15px; line-height: 1.4; }
+        .signatures { display: flex; justify-content: space-between; margin-top: 35px; font-size: 11px; }
+        .sign-line { border-top: 1px solid #000; width: 45%; text-align: center; padding-top: 4px; }
+
+        /* Pure CSS status classes (removes VS Code CSS parser errors) */
+        .status-text { font-weight: bold; }
+        .status-paid { color: #16a34a; }
+        .status-unpaid { color: #dc2626; }
+
+        /* =========================================
+           OFFICIAL PAID STAMP (APPEARS ONLY IF PAID)
+        ========================================= */
+        .paid-stamp {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-18deg);
+            border: 4px solid #16a34a;
+            color: #16a34a;
+            font-size: 32px;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 6px 20px;
+            letter-spacing: 4px;
+            border-radius: 8px;
+            opacity: 0.85;
+            pointer-events: none;
+            box-shadow: 0 0 0 2px #16a34a;
+            text-align: center;
+        }
+
+        .paid-stamp span {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 1px;
+            margin-top: -2px;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print-bar { display: none; }
+            .voucher-sheet { width: 100%; box-shadow: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-bar">
+        <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+    </div>
+
+    <div class="voucher-sheet">
+        <!-- ================= STUDENT COPY ================= -->
+        <div class="slip">
+            {% if voucher.status == 'Paid' %}
+            <div class="paid-stamp">
+                PAID
+                <span>VERIFIED PAYMENT</span>
+            </div>
+            {% endif %}
+
+            <div class="header">
+                <img src="{% static 'images/shiza-logo.jpeg' %}" alt="Logo" onerror="this.style.display='none'">
+                <h3>Shiza Spoken Club</h3>
+                <span>STUDENT COPY</span>
+            </div>
+
+            <div class="info-row"><span class="info-label">Voucher No:</span> <span>{{ voucher.voucher_no }}</span></div>
+            <div class="info-row"><span class="info-label">Student Name:</span> <span>{{ student.name }}</span></div>
+            <div class="info-row"><span class="info-label">Username / Roll:</span> <span>{{ student.username }}</span></div>
+            <div class="info-row"><span class="info-label">Billing Month:</span> <span>{{ voucher.billing_month }}</span></div>
+            <div class="info-row"><span class="info-label">Issue Date:</span> <span>{{ voucher.issue_date|date:"d-M-Y" }}</span></div>
+            <div class="info-row"><span class="info-label">Due Date:</span> <span>{{ voucher.due_date|date:"d-M-Y" }}</span></div>
+            <div class="info-row">
+                <span class="info-label">Status:</span> 
+                <span class="status-text {% if voucher.status == 'Paid' %}status-paid{% else %}status-unpaid{% endif %}">
+                    {{ voucher.status }}
+                </span>
+            </div>
+
+            <div class="amount-box">
+                <div style="font-size:12px; color:#555;">Total Amount:</div>
+                <div class="total">PKR {{ voucher.amount }}</div>
+            </div>
+
+            <div class="instructions">
+                • Please clear your fee before the due date.<br>
+                • Retain this receipt as payment verification.
+            </div>
+
+            <div class="signatures">
+                <div class="sign-line">Student Signature</div>
+                <div class="sign-line">Authorized Stamp</div>
+            </div>
+        </div>
+
+        <!-- ================= INSTITUTE COPY ================= -->
+        <div class="slip">
+            {% if voucher.status == 'Paid' %}
+            <div class="paid-stamp">
+                PAID
+                <span>VERIFIED PAYMENT</span>
+            </div>
+            {% endif %}
+
+            <div class="header">
+                <img src="{% static 'images/shiza-logo.jpeg' %}" alt="Logo" onerror="this.style.display='none'">
+                <h3>Shiza Spoken Club</h3>
+                <span>INSTITUTE COPY</span>
+            </div>
+
+            <div class="info-row"><span class="info-label">Voucher No:</span> <span>{{ voucher.voucher_no }}</span></div>
+            <div class="info-row"><span class="info-label">Student Name:</span> <span>{{ student.name }}</span></div>
+            <div class="info-row"><span class="info-label">Username / Roll:</span> <span>{{ student.username }}</span></div>
+            <div class="info-row"><span class="info-label">Billing Month:</span> <span>{{ voucher.billing_month }}</span></div>
+            <div class="info-row"><span class="info-label">Issue Date:</span> <span>{{ voucher.issue_date|date:"d-M-Y" }}</span></div>
+            <div class="info-row"><span class="info-label">Due Date:</span> <span>{{ voucher.due_date|date:"d-M-Y" }}</span></div>
+            <div class="info-row">
+                <span class="info-label">Status:</span> 
+                <span class="status-text {% if voucher.status == 'Paid' %}status-paid{% else %}status-unpaid{% endif %}">
+                    {{ voucher.status }}
+                </span>
+            </div>
+
+            <div class="amount-box">
+                <div style="font-size:12px; color:#555;">Total Received:</div>
+                <div class="total">PKR {{ voucher.amount }}</div>
+            </div>
+
+            <div class="instructions">
+                • Official administrative record.<br>
+                • WhatsApp Contact: {{ student.whatsapp }}
+            </div>
+
+            <div class="signatures">
+                <div class="sign-line">Depositor Signature</div>
+                <div class="sign-line">Authorized Stamp</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

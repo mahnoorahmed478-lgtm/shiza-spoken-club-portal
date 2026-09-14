@@ -1,0 +1,216 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Student Login - Shiza Spoken Club</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            min-height: 100vh;
+        }
+
+        .login-box {
+            width: 380px;
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.10);
+
+            text-align: center;
+        }
+
+        .logo {
+            width: 220px;
+            height: auto;
+
+            display: block;
+
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+
+            font-size: 26px;
+            color: #222;
+        }
+
+        .subtitle {
+            color: #666;
+
+            margin: 0 0 28px;
+
+            font-size: 15px;
+        }
+
+        .form-group {
+            text-align: left;
+
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1769aa;
+        }
+
+        button {
+            width: 100%;
+
+            margin-top: 8px;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #1769aa;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .message {
+            color: #d00000;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            font-size: 14px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <img
+            src="{% static 'images/shiza-logo.jpeg' %}"
+            alt="Shiza Spoken Club Logo"
+            class="logo"
+        >
+
+        <h1>Shiza Spoken Club</h1>
+
+        <p class="subtitle">
+            Student Learning Portal
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
